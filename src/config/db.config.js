@@ -1,10 +1,10 @@
-const mysql = require('mysql');
+const mysql = require('mysql'); //requerir el paquete de mysql
 
 const mysqlConnection = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: '',
-    database: 'poderio_bd'
+  host: 'localhost',
+  user:'root',
+  password:'',
+  database: 'poderio_bd'
 })
 
 mysqlConnection.connect(function (err) {

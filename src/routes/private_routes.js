@@ -3,4 +3,4 @@ const router = express.Router();
 
 // router.get('/',)
 
-module.router;
+module.exports = router;
