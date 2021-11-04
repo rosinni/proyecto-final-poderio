@@ -14,6 +14,7 @@ app.use(express.urlencoded({ extended: true })) // for parsing application/x-www
 //rutas publicas
 app.use(publicRoutes);
 
+//colocar aqui el middleware de JWT
 
 //rutas privadas
 // app.use(privateRoutes);
