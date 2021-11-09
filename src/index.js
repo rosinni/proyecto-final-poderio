@@ -1,8 +1,9 @@
+require('dotenv').config(); // permite leer los archivos .env
 const express = require('express');
 const app = express();
 //importando rutas
 const publicRoutes = require('./routes/public_routes');
-// const privateRoutes = require('./routes/private_routes');
+const privateRoutes = require('./routes/private_routes');
 
 const port = process.env.PORT || 8080;
 
@@ -17,7 +18,7 @@ app.use(publicRoutes);
 //colocar aqui el middleware de JWT
 
 //rutas privadas
-// app.use(privateRoutes);
+app.use(privateRoutes);
 
 //iniciamos servidor de express
 app.listen(port,()=>{
