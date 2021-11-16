@@ -18,29 +18,89 @@ const createUser = (req, res) => {
 
 
   //login de usuario
-  const login = (req, res)=>{
 
+  const login = (req,res) =>{
+    console.log(req.body);
     let {email,password} = req.body;
-    if (!email) return res.status(400).json({"msg":"Verifique el email"})
-    if (!password) return res.status(400).json({"msg":"Verifique el password"})
 
-    mysqlConnection.query('SELECT id FROM `users` WHERE email=? AND password=?',[email,password], (err, rows) => {
-      if(!err) {
-        //obtenemos el id
-          const userID = rows[0].id;
 
-          //si no hubo coincidencia en la busqueda devolvemos un msg
-          if(!rows.length) return res.json({"msg":"Email o password incorrecto"})
-      
-          const token = jwt.sign({ userID }, process.env.JWT_KEY, { expiresIn: 60 * 60 });// Generamos el Token!!!
-          return res.json({ userID, token });// Devolvera el usuario y el token creado recientemente al cliente
+    // !"" => true
+    if(!email) return res.status(400).json({"msg":"verifica tu mail"});
+    if (!password) return res.status(400).json({"msg":"Verifique el password"});
 
-      } else {
-        console.log(err)
+    mysqlConnection.query('SELECT id FROM `users` WHERE email=? AND password=?',[email,password],(err, rows)=>{
+
+      if(!err){
+        
+        if(!rows.length){
+          return res.json({"msg":"Email o password incorrecto"});
+        }else{
+          let userID = rows[0].id;
+          const token = jwt.sign({userID}, process.env.JWT_KEY)
+          return res.json({"id":userID , token});
+        } 
+    
+      }else{
+        console.log(err);
       }
-    }); 
+
+    })
 
   }
+
+
+  const getProfile = (req,res)=>{
+
+    let {userID} = req.user;
+    console.log(req.user.userID);
+
+    mysqlConnection.query('SELECT * FROM `users` WHERE id=?',[userID], (err, rows) => {
+        if(!err) {
+          res.json(rows);
+        } else {
+          console.log(err);
+        }
+      });  
+    
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  // const login = (req, res)=>{
+
+  //   let {email,password} = req.body;
+  //   if (!email) return res.status(400).json({"msg":"Verifique el email"})
+  //   if (!password) return res.status(400).json({"msg":"Verifique el password"})
+
+  //   mysqlConnection.query('SELECT id FROM `users` WHERE email=? AND password=?',[email,password], (err, rows) => {
+  //     if(!err) {
+  //       //obtenemos el id
+  //         const userID = rows[0].id;
+
+  //         //si no hubo coincidencia en la busqueda devolvemos un msg
+  //         if(!rows.length) return res.json({"msg":"Email o password incorrecto"})
+      
+  //         const token = jwt.sign({ userID }, process.env.JWT_KEY, { expiresIn: 60 * 60 });// Generamos el Token!!!
+  //         return res.json({ userID, token });// Devolvera el usuario y el token creado recientemente al cliente
+
+  //     } else {
+  //       console.log(err)
+  //     }
+  //   }); 
+
+  // }
 
 
 //obtener datos
@@ -60,3 +120,4 @@ const createUser = (req, res) => {
   exports.createUser = createUser;
   exports.getData = getData;
   exports.login = login;
+  exports.getProfile = getProfile;
