@@ -53,14 +53,6 @@ const createUser = (req, res) => {
 
     let {userID} = req.user;
     console.log(req.user.userID);
-
-    mysqlConnection.query('SELECT * FROM `users` WHERE id=?',[userID], (err, rows) => {
-        if(!err) {
-          res.json(rows);
-        } else {
-          console.log(err);
-        }
-      });  
     
 }
 
